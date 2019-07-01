@@ -10,7 +10,7 @@ LEARNING_RATE_BASE = 0.8
 LEARNING_RATE_DECAY = 0.8
 
 REGULARIZATION_RATE = 0.0001
-TRAINING_STEPS = 30000
+TRAINING_STEPS = 3000
 MOVING_AVERAGE_DECAY = 0.99
 
 # 网络前向传播：输入权重和网络参数，输出前向结果
@@ -30,10 +30,10 @@ def train(mnist):
     y_ = tf.placeholder(tf.float32,[None, OUTPUT_NODE],name = 'y-input')
 
     # 生成隐藏层参数
-    weights1 = tf.Variable(tf.truncated_normal([INPUT_NODE,LAYER1_NODE]), stddev = 0.1)
+    weights1 = tf.Variable(tf.truncated_normal([INPUT_NODE,LAYER1_NODE], stddev = 0.1))
     biases1 = tf.Variable(tf.constant(0.1,shape=[LAYER1_NODE]))
     # 生成输出层参数
-    weights2 = tf.Variable(tf.truncated_normal[LAYER1_NODE, OUTPUT_NODE], stddev = 0.1)
+    weights2 = tf.Variable(tf.truncated_normal([LAYER1_NODE, OUTPUT_NODE], stddev = 0.1))
     biases2 = tf.Variable(tf.constant(0.1,shape = [OUTPUT_NODE]))
 
     # 计算前向传播
@@ -74,29 +74,29 @@ def train(mnist):
 
     # ??
     correct_prediction = tf.equal(tf.argmax(average_y,1), tf.argmax(y_,1))
-    accuracy  = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-with tf.Session() as sess:
-    tf.global_variables_initializer().run()
+    with tf.Session() as sess:
+        tf.global_variables_initializer().run()
 
-    validate_feed = {x: mnist.validation.images, y_: mnist.validation.labels}
-    test_feed = {x: mnist.test.images, y_: mnist.test.labels}
+        validate_feed = {x:mnist.validation.images, y_:mnist.validation.labels}
+        test_feed = {x:mnist.test.images, y_:mnist.test.labels}
 
-    # 迭代训练
-    for i in range(TRAINING_STEPS):
-        if i%1000 == 0:
-            validate_acc = sess.run(accuracy, feed_dict=validate_feed)
-            print("After %d training step(s), validation accuracy using average model is %g" % (i,validate_acc))
+        # 迭代训练
+        for i in range(TRAINING_STEPS):
+            if i%1000 == 0:
+                validate_acc = sess.run(accuracy, feed_dict=validate_feed)
+                print("After %d training step(s), validation accuracy using average model is %g" % (i,validate_acc))
 
-        xs,ys = mnist.train.next_batch(BATCH_SIZE)
-        sess.run(train_op, feed_dict = {x:xs,y_:ys})
+            xs,ys = mnist.train.next_batch(BATCH_SIZE)
+            sess.run(train_op, feed_dict = {x:xs,y_:ys})
 
-    test_acc = sess.run(accuracy,feed_dict=test_feed)
-    print("After %d training step(s), test accuracy using average model is %g" % (TRAINING_STEPS,test_acc))
+        test_acc = sess.run(accuracy,feed_dict=test_feed)
+        print("After %d training step(s), test accuracy using average model is %g" % (TRAINING_STEPS,test_acc))
 
 # 主程序入口
 def main(avgv=None):
-    mnist = input_data.read_data_sets("/tmp/data", one_hot=True)
+    mnist = input_data.read_data_sets("D:\\projects\\tf_mnist\\data", one_hot=True)
     train(mnist)
 
 if __name__ == '__main__':
