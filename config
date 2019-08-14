@@ -1,0 +1,22 @@
+{
+    "info": {
+        "date_aim": "20190807_predict_price_data1_1_lstm_03"
+    },
+	"data": {
+		"filename": "data1_1.csv",
+        "code": [
+			"1979"
+		],
+		"date": [
+			"0"
+		],
+		"columns": [
+			"price",
+			"change",
+			"volume"
+		],
+		"sequence_length": 30,
+		"train_test_split": 0.85,
+		"normalise": 3
+	}
+}
